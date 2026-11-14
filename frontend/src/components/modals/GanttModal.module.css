@@ -1,0 +1,365 @@
+.summaryBar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(5, 12, 20, 0.36);
+}
+
+.summaryBar > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summaryBar strong {
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.summaryBar p {
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+}
+
+.summaryStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6px;
+  letter-spacing: 0.05em;
+}
+
+.summaryStats strong {
+  margin-left: 4px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 400;
+}
+
+.emptyWrap {
+  padding: 26px 20px;
+}
+
+.chart {
+  padding: 16px 20px 20px;
+}
+
+.chartHead {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  min-width: 720px;
+  align-items: end;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.chartHeadLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.chartHeadLabel svg {
+  color: var(--cyan);
+}
+
+.axis {
+  position: relative;
+  height: 16px;
+}
+
+.axis span {
+  position: absolute;
+  top: 0;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.6px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.axis span:first-child {
+  transform: translateX(0);
+}
+
+.axis span:last-child {
+  transform: translateX(-100%);
+}
+
+.lanes {
+  position: relative;
+  min-width: 720px;
+}
+
+.overlapZone {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 190px;
+  pointer-events: none;
+}
+
+.overlapBand {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-right: 1px solid rgba(94, 242, 178, 0.12);
+  border-left: 1px solid rgba(94, 242, 178, 0.12);
+  background: rgba(94, 242, 178, 0.035);
+}
+
+.overlapBand span {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  color: rgba(94, 242, 178, 0.4);
+  font-family: var(--font-mono);
+  font-size: 5px;
+  letter-spacing: 0.09em;
+}
+
+.row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 45px;
+  border-bottom: 1px solid rgba(125, 190, 209, 0.07);
+}
+
+.rowLabel {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+  padding-right: 8px;
+}
+
+.rowLabel > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.rowLabel strong {
+  overflow: hidden;
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowLabel span:not(.rowDot) {
+  overflow: hidden;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.rowDot {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--faint);
+}
+
+.rowDot_active {
+  background: var(--cyan);
+  box-shadow: 0 0 7px rgba(79, 216, 255, 0.7);
+}
+
+.rowDot_completed {
+  background: var(--teal);
+}
+
+.rowDot_needs_attention,
+.rowDot_failed {
+  background: var(--amber);
+}
+
+.lane {
+  position: relative;
+  height: 45px;
+  background:
+    linear-gradient(90deg, rgba(125, 190, 209, 0.07) 1px, transparent 1px);
+  background-size: 25% 100%;
+}
+
+.bar {
+  position: absolute;
+  top: 15px;
+  display: flex;
+  min-width: 3px;
+  height: 15px;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(79, 216, 255, 0.28);
+  border-radius: 2px;
+  background:
+    linear-gradient(90deg, rgba(79, 216, 255, 0.34), rgba(79, 216, 255, 0.12));
+  box-shadow: 0 0 12px rgba(79, 216, 255, 0.06);
+}
+
+.bar span {
+  padding: 0 4px;
+  overflow: hidden;
+  color: rgba(220, 248, 255, 0.72);
+  font-family: var(--font-mono);
+  font-size: 5.3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barActive {
+  border-color: rgba(79, 216, 255, 0.8);
+  background: linear-gradient(90deg, rgba(79, 216, 255, 0.65), rgba(79, 216, 255, 0.18));
+  animation: gantt-live 1.4s ease-in-out infinite;
+}
+
+@keyframes gantt-live {
+  0%,
+  100% {
+    box-shadow: 0 0 7px rgba(79, 216, 255, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(79, 216, 255, 0.5);
+  }
+}
+
+.barAttention {
+  border-color: rgba(255, 179, 92, 0.45);
+  background: linear-gradient(90deg, rgba(255, 179, 92, 0.4), rgba(255, 179, 92, 0.12));
+}
+
+.noInterval {
+  position: absolute;
+  top: 17px;
+  left: 2px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.observations {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.observationHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.observationHead > span:last-child {
+  color: var(--teal);
+}
+
+.sequence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.sequenceItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 5px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  letter-spacing: 0.03em;
+}
+
+.footer > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer svg {
+  color: var(--muted);
+}
+
+.overlapGood {
+  color: var(--teal) !important;
+}
+
+.overlapGood svg {
+  color: var(--teal) !important;
+}
+
+.overlapMuted {
+  color: var(--faint) !important;
+}
+
+@media (max-width: 900px) {
+  .chart {
+    padding: 12px;
+    overflow-x: auto;
+  }
+
+  .summaryBar {
+    flex-direction: column;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 620px) {
+  .chart {
+    padding: 10px;
+  }
+
+  .footer {
+    gap: 9px;
+  }
+}

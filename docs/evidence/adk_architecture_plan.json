@@ -1,0 +1,116 @@
+{
+  "deployment_target": "local",
+  "observability_plan": {
+    "backends": [
+      "opentelemetry"
+    ],
+    "efficiency_metrics_enabled": true,
+    "redact_prompts": true
+  },
+  "project_name": "astergrid",
+  "rejected_alternatives": [
+    {
+      "complexity_score": 1,
+      "fit_rationale": "Best for focused conversational or structured-output tasks with zero or minimal tools.",
+      "latency_profile": "lowest (1 LLM turn)",
+      "maintainability_score": 5,
+      "pattern": "single_agent",
+      "reliability_score": 5,
+      "testability_score": 5,
+      "token_cost_profile": "lowest"
+    },
+    {
+      "complexity_score": 2,
+      "fit_rationale": "Simplest reliable pattern when a single LlmAgent can invoke cohesive FunctionTools.",
+      "latency_profile": "low (1-2 LLM turns + tool execution)",
+      "maintainability_score": 5,
+      "pattern": "tool_agent",
+      "reliability_score": 5,
+      "testability_score": 5,
+      "token_cost_profile": "low"
+    },
+    {
+      "complexity_score": 2,
+      "fit_rationale": "Ideal for deterministic multi-step pipelines (e.g., intake -> analysis -> synthesis) where order is strict.",
+      "latency_profile": "medium (sum of sequential steps)",
+      "maintainability_score": 4,
+      "pattern": "sequential_workflow",
+      "reliability_score": 5,
+      "testability_score": 5,
+      "token_cost_profile": "medium"
+    },
+    {
+      "complexity_score": 3,
+      "fit_rationale": "Best when multiple independent research or data-gathering sub-agents can execute concurrently.",
+      "latency_profile": "low-medium (max of concurrent branches)",
+      "maintainability_score": 4,
+      "pattern": "parallel_workflow",
+      "reliability_score": 4,
+      "testability_score": 4,
+      "token_cost_profile": "medium-high"
+    }
+  ],
+  "required_integrations": [
+    "bigquery_toolset",
+    "code_execution",
+    "custom_function_tool"
+  ],
+  "root_agent": {
+    "agent_type": "LlmAgent",
+    "callbacks": [
+      "before_model_guardrail",
+      "before_tool_validator",
+      "after_tool_sanitizer"
+    ],
+    "description": "Design a Google ADK 2.12 graph_workflow, not a live voice agent. Use a Workflow with FunctionNode and JoinNode. No audio",
+    "include_contents": "default",
+    "instruction": "You are the primary agent for: Design a Google ADK 2.12 graph_workflow, not a live voice agent. Use a Workflow with FunctionNode and JoinNode. No audio, video, BigQuery, or code execution tools are required. Build ASTERGRID: a local FastAPI backend and React TypeScript Three.js frontend. The workflow validates a synthetic scenario, builds a seeded world, runs conditions, resource allocation, and accessibility analysis concurrently, joins outputs, performs preflight verification, runs a deterministic simulation, performs outcome verification, applies at most two bounded revisions, and produces a reproducible report. Roles: Scenario Director, Intake, World Builder, Conditions, Resources, Accessibility, Simulation, Critic, Reporter. Deterministic policy mode must work without any model API key; optional Gemini mode is key-gated. Persist with SQLite, stream ordered events over SSE, validate all artifacts with Pydantic. Fictional emergency coordination only; no military targeting or real-world operational use.",
+    "max_iterations": null,
+    "mode": "chat",
+    "model": "gemini-2.5-flash",
+    "name": "astergrid_root",
+    "output_key": null,
+    "require_confirmation": false,
+    "sub_agents": [],
+    "tools": [
+      "bigquery_toolset",
+      "code_execution",
+      "custom_function_tool"
+    ]
+  },
+  "security_controls": [
+    "secret_redaction_logging",
+    "before_model_prompt_injection_guardrail",
+    "before_tool_argument_validation",
+    "after_tool_output_sanitization",
+    "max_llm_calls_budget",
+    "require_confirmation_on_mutating_tools"
+  ],
+  "selected_pattern": "live_voice_agent",
+  "selected_scorecard": {
+    "complexity_score": 4,
+    "fit_rationale": "Bidirectional audio/video streaming agent using ADK `google.adk.live` with session resumption and interruption handling.",
+    "latency_profile": "realtime bidirectional streaming",
+    "maintainability_score": 3,
+    "pattern": "live_voice_agent",
+    "reliability_score": 4,
+    "testability_score": 3,
+    "token_cost_profile": "high"
+  },
+  "selected_template": "live_voice_agent",
+  "selection_rationale": "Requirement specifies real-time audio/video streaming modalities, requiring ADK's google.adk.live runner.",
+  "session_strategy": {
+    "artifact_backend": "in_memory",
+    "context_caching": false,
+    "context_compaction": true,
+    "memory_backend": "none",
+    "session_backend": "in_memory"
+  },
+  "sub_agents": [],
+  "termination_conditions": {
+    "abort_signal_enabled": true,
+    "max_iterations": 3,
+    "max_llm_calls": 20,
+    "timeout_seconds": 30
+  }
+}

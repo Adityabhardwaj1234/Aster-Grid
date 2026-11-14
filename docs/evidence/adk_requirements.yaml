@@ -1,0 +1,88 @@
+project_name: astergrid
+business_objective: 'Design a Google ADK 2.12 graph_workflow, not a live voice agent.
+  Use a Workflow with FunctionNode and JoinNode. No audio, video, BigQuery, or code
+  execution tools are required. Build ASTERGRID: a local FastAPI backend and React
+  TypeScript Three.js frontend. The workflow validates a synthetic scenario, builds
+  a seeded world, runs conditions, resource allocation, and accessibility analysis
+  concurrently, joins outputs, performs preflight verification, runs a deterministic
+  simulation, performs outcome verification, applies at most two bounded revisions,
+  and produces a reproducible report. Roles: Scenario Director, Intake, World Builder,
+  Conditions, Resources, Accessibility, Simulation, Critic, Reporter. Deterministic
+  policy mode must work without any model API key; optional Gemini mode is key-gated.
+  Persist with SQLite, stream ordered events over SSE, validate all artifacts with
+  Pydantic. Fictional emergency coordination only; no military targeting or real-world
+  operational use.'
+user_types:
+- end_user
+user_stories: []
+functional_requirements:
+- id: FR-001
+  category: core_behavior
+  description: 'Design a Google ADK 2.12 graph_workflow, not a live voice agent. Use
+    a Workflow with FunctionNode and JoinNode. No audio, video, BigQuery, or code
+    execution tools are required. Build ASTERGRID: a local FastAPI backend and React
+    TypeScript Three.js frontend. The workflow validates a synthetic scenario, builds
+    a seeded world, runs conditions, resource allocation, and accessibility analysis
+    concurrently, joins outputs, performs preflight verification, runs a deterministic
+    simulation, performs outcome verification, applies at most two bounded revisions,
+    and produces a reproducible report. Roles: Scenario Director, Intake, World Builder,
+    Conditions, Resources, Accessibility, Simulation, Critic, Reporter. Deterministic
+    policy mode must work without any model API key; optional Gemini mode is key-gated.
+    Persist with SQLite, stream ordered events over SSE, validate all artifacts with
+    Pydantic. Fictional emergency coordination only; no military targeting or real-world
+    operational use.'
+  priority: hard
+  rationale: null
+non_functional_requirements: []
+expected_tools:
+- bigquery_toolset
+- code_execution
+- custom_function_tool
+external_systems: []
+preferred_provider: gemini
+preferred_model: gemini-2.5-flash
+fallback_model: null
+requires_structured_output: false
+output_schema_name: null
+requires_streaming_or_live: true
+modalities:
+- text
+- audio
+- video
+persistence:
+  session_backend: in_memory
+  memory_backend: none
+  artifact_backend: in_memory
+  enable_context_compaction: true
+  enable_context_caching: false
+  multi_turn_session: true
+latency_and_cost:
+  max_latency_seconds: 10.0
+  max_cost_usd_per_1k_turns: 5.0
+  quality_tier: balanced
+  daily_request_limit: null
+security:
+  pii_redaction_required: true
+  allow_external_network: false
+  allow_code_execution: false
+  require_human_confirmation_for_mutations: true
+  custom_service_account: null
+  allowed_domains: []
+deployment_target: local
+observability_backends:
+- opentelemetry
+acceptance_criteria:
+- id: AC-001
+  description: Tool trajectory matches expected ground-truth calls.
+  metric_name: tool_trajectory_avg_score
+  threshold: 1.0
+- id: AC-002
+  description: Final response achieves semantic/lexical similarity threshold.
+  metric_name: response_match_score
+  threshold: 0.8
+assumptions: []
+unknowns: []
+out_of_scope: []
+clarification_questions: []
+contradictions: []
+metadata: {}

@@ -1,0 +1,81 @@
+﻿{
+  "acceptance_criteria": [
+    {
+      "description": "Tool trajectory matches expected ground-truth calls.",
+      "id": "AC-001",
+      "metric_name": "tool_trajectory_avg_score",
+      "threshold": 1.0
+    },
+    {
+      "description": "Final response achieves semantic/lexical similarity threshold.",
+      "id": "AC-002",
+      "metric_name": "response_match_score",
+      "threshold": 0.8
+    }
+  ],
+  "assumptions": [],
+  "business_objective": "Design a Google ADK 2.12 graph_workflow, not a live voice agent. Use a Workflow with FunctionNode and JoinNode. No audio, video, BigQuery, or code execution tools are required. Build ASTERGRID: a local FastAPI backend and React TypeScript Three.js frontend. The workflow validates a synthetic scenario, builds a seeded world, runs conditions, resource allocation, and accessibility analysis concurrently, joins outputs, performs preflight verification, runs a deterministic simulation, performs outcome verification, applies at most two bounded revisions, and produces a reproducible report. Roles: Scenario Director, Intake, World Builder, Conditions, Resources, Accessibility, Simulation, Critic, Reporter. Deterministic policy mode must work without any model API key; optional Gemini mode is key-gated. Persist with SQLite, stream ordered events over SSE, validate all artifacts with Pydantic. Fictional emergency coordination only; no military targeting or real-world operational use.",
+  "clarification_questions": [],
+  "contradictions": [],
+  "deployment_target": "local",
+  "expected_tools": [
+    "bigquery_toolset",
+    "code_execution",
+    "custom_function_tool"
+  ],
+  "external_systems": [],
+  "fallback_model": null,
+  "functional_requirements": [
+    {
+      "category": "core_behavior",
+      "description": "Design a Google ADK 2.12 graph_workflow, not a live voice agent. Use a Workflow with FunctionNode and JoinNode. No audio, video, BigQuery, or code execution tools are required. Build ASTERGRID: a local FastAPI backend and React TypeScript Three.js frontend. The workflow validates a synthetic scenario, builds a seeded world, runs conditions, resource allocation, and accessibility analysis concurrently, joins outputs, performs preflight verification, runs a deterministic simulation, performs outcome verification, applies at most two bounded revisions, and produces a reproducible report. Roles: Scenario Director, Intake, World Builder, Conditions, Resources, Accessibility, Simulation, Critic, Reporter. Deterministic policy mode must work without any model API key; optional Gemini mode is key-gated. Persist with SQLite, stream ordered events over SSE, validate all artifacts with Pydantic. Fictional emergency coordination only; no military targeting or real-world operational use.",
+      "id": "FR-001",
+      "priority": "hard",
+      "rationale": null
+    }
+  ],
+  "latency_and_cost": {
+    "daily_request_limit": null,
+    "max_cost_usd_per_1k_turns": 5.0,
+    "max_latency_seconds": 10.0,
+    "quality_tier": "balanced"
+  },
+  "metadata": {},
+  "modalities": [
+    "text",
+    "audio",
+    "video"
+  ],
+  "non_functional_requirements": [],
+  "observability_backends": [
+    "opentelemetry"
+  ],
+  "out_of_scope": [],
+  "output_schema_name": null,
+  "persistence": {
+    "artifact_backend": "in_memory",
+    "enable_context_caching": false,
+    "enable_context_compaction": true,
+    "memory_backend": "none",
+    "multi_turn_session": true,
+    "session_backend": "in_memory"
+  },
+  "preferred_model": "gemini-2.5-flash",
+  "preferred_provider": "gemini",
+  "project_name": "astergrid",
+  "requires_streaming_or_live": true,
+  "requires_structured_output": false,
+  "security": {
+    "allow_code_execution": false,
+    "allow_external_network": false,
+    "allowed_domains": [],
+    "custom_service_account": null,
+    "pii_redaction_required": true,
+    "require_human_confirmation_for_mutations": true
+  },
+  "unknowns": [],
+  "user_stories": [],
+  "user_types": [
+    "end_user"
+  ]
+}

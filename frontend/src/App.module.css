@@ -1,0 +1,161 @@
+.boot {
+  position: relative;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  min-height: 100vh;
+  padding: 32px;
+  overflow: hidden;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(41, 137, 168, 0.16), transparent 28rem),
+    linear-gradient(180deg, #03060b, #06101a);
+}
+
+.boot::before {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(91, 165, 190, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 165, 190, 0.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at center, black, transparent 76%);
+  content: '';
+}
+
+.bootScan {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 20%, rgba(79, 216, 255, 0.025) 50%, transparent 80%);
+  animation: ag-scan 5s linear infinite;
+  pointer-events: none;
+}
+
+.bootMark {
+  position: relative;
+  width: 118px;
+  height: 118px;
+  margin-bottom: 30px;
+}
+
+.bootMark img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 50px rgba(79, 216, 255, 0.2);
+}
+
+.bootRing {
+  position: absolute;
+  inset: -11px;
+  border: 1px solid rgba(79, 216, 255, 0.2);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: ag-spin 3.4s linear infinite;
+}
+
+.boot h1 {
+  max-width: 580px;
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.bootMessage {
+  max-width: 480px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.bootProgress {
+  width: min(280px, 64vw);
+  height: 2px;
+  margin-top: 30px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(125, 190, 209, 0.14);
+}
+
+.bootProgress span {
+  display: block;
+  width: 38%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  animation: boot-sweep 1.6s var(--ease-out) infinite;
+}
+
+@keyframes boot-sweep {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(370%);
+  }
+}
+
+.retry {
+  margin-top: 24px;
+  padding: 10px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: rgba(79, 216, 255, 0.08);
+  color: var(--cyan-soft);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.toastWrap {
+  position: fixed;
+  z-index: 1000;
+  right: 24px;
+  bottom: 24px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(450px, calc(100vw - 48px));
+  padding: 12px 13px;
+  border: 1px solid rgba(255, 179, 92, 0.32);
+  border-radius: var(--radius-sm);
+  background: rgba(12, 19, 27, 0.96);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-dim);
+  font-size: 12px;
+  text-align: left;
+  pointer-events: auto;
+  backdrop-filter: blur(20px);
+  animation: ag-fade-up 220ms var(--ease-out);
+}
+
+.toastSignal {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 10px var(--amber);
+}
+
+.toastClose {
+  margin-left: 6px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (max-width: 720px) {
+  .toastWrap {
+    right: 12px;
+    bottom: 12px;
+  }
+}

@@ -1,0 +1,72 @@
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 140px;
+  padding: 3px 6px;
+  overflow: hidden;
+  border: 1px solid rgba(125, 190, 209, 0.2);
+  border-radius: 2px;
+  background: rgba(4, 11, 18, 0.74);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+  color: #a9c2cb;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  backdrop-filter: blur(7px);
+  transform: translateY(-2px);
+  transition: border-color 120ms ease, color 120ms ease;
+}
+
+.label:hover {
+  border-color: rgba(79, 216, 255, 0.45);
+  color: #e9fbff;
+}
+
+.labelId {
+  color: #5d7b87;
+  font-size: 6px;
+}
+
+.default {
+  border-color: rgba(125, 190, 209, 0.18);
+}
+
+.compact {
+  padding: 2px 4px;
+  font-size: 6px;
+  letter-spacing: 0.03em;
+}
+
+.affected {
+  border-color: rgba(255, 179, 92, 0.32);
+  background: rgba(14, 11, 7, 0.78);
+  color: #ffd09a;
+}
+
+.affected .labelId {
+  color: #b17936;
+}
+
+.selected {
+  border-color: rgba(79, 216, 255, 0.6);
+  background: rgba(4, 18, 25, 0.88);
+  box-shadow: 0 0 15px rgba(79, 216, 255, 0.14);
+  color: #e9fdff;
+}
+
+.danger {
+  border-color: rgba(255, 90, 110, 0.46);
+  background: rgba(24, 8, 11, 0.82);
+  color: #ffb3bc;
+}
+
+.muted {
+  border-color: rgba(125, 190, 209, 0.1);
+  background: rgba(4, 11, 18, 0.48);
+  color: #6a8390;
+}

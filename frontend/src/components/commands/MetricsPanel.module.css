@@ -1,0 +1,339 @@
+.panel {
+  flex: 0 0 auto;
+  padding: 13px;
+  background:
+    linear-gradient(180deg, rgba(79, 216, 255, 0.02), transparent 28%),
+    var(--panel);
+}
+
+.clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.clock svg {
+  color: var(--cyan);
+}
+
+.scoreRow {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.scoreRing {
+  display: grid;
+  width: 78px;
+  height: 78px;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--cyan) 0deg,
+    var(--teal) var(--score),
+    rgba(125, 190, 209, 0.1) var(--score),
+    rgba(125, 190, 209, 0.1) 360deg
+  );
+  box-shadow: 0 0 28px rgba(79, 216, 255, 0.08);
+}
+
+.scoreRing::before {
+  position: absolute;
+  width: 66px;
+  height: 66px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #07111a;
+  content: '';
+}
+
+.scoreRing > div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.scoreRing strong {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.scoreRing span {
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.scoreFacts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: var(--line);
+}
+
+.scoreFacts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 7px;
+  background: rgba(5, 13, 21, 0.9);
+}
+
+.scoreFacts span {
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.scoreFacts strong {
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+}
+
+.warn {
+  color: var(--amber) !important;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin-top: 8px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: var(--line);
+}
+
+.kpiGrid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 7px 8px;
+  background: rgba(5, 13, 21, 0.9);
+}
+
+.kpiGrid span {
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kpiGrid strong {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.track {
+  height: 2px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(125, 190, 209, 0.1);
+}
+
+.track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--cyan), var(--teal));
+  transition: width 400ms var(--ease-out);
+}
+
+.signalRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 8px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: var(--line);
+}
+
+.signalRow > div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  background: rgba(5, 13, 21, 0.9);
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.6px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.signalRow svg {
+  flex: 0 0 auto;
+  color: var(--muted);
+}
+
+.signalRow span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signalRow strong {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 6.5px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.verifyBlock {
+  margin-top: 9px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: rgba(5, 13, 21, 0.34);
+}
+
+.verifyHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 5px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.verifyHead > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+}
+
+.verifyHead svg {
+  color: var(--cyan);
+}
+
+.verifyRow {
+  display: grid;
+  grid-template-columns: 56px 82px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 22px;
+  border-top: 1px solid rgba(125, 190, 209, 0.07);
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6.3px;
+  text-transform: uppercase;
+}
+
+.verifyRow:first-of-type {
+  border-top: 0;
+}
+
+.pending {
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.verifyMeta {
+  overflow: hidden;
+  color: var(--faint);
+  font-size: 5.8px;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.footer > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.integrity {
+  color: var(--teal);
+}
+
+@media (max-height: 900px) {
+  .scoreRow {
+    grid-template-columns: 70px minmax(0, 1fr);
+    margin-top: 9px;
+  }
+
+  .scoreRing {
+    width: 66px;
+    height: 66px;
+  }
+
+  .scoreRing::before {
+    width: 56px;
+    height: 56px;
+  }
+
+  .scoreRing strong {
+    font-size: 17px;
+  }
+
+  .verifyBlock {
+    display: none;
+  }
+}
+
+@media (max-height: 780px) {
+  .signalRow {
+    display: none;
+  }
+
+  .scoreFacts {
+    grid-template-columns: 1fr;
+  }
+
+  .scoreFacts > div:nth-child(n + 3) {
+    display: none;
+  }
+}
