@@ -22,7 +22,7 @@ Acceptance is based on executed evidence, not intent. Where a check has not been
 | 12 | Proposed/rejected/validated states are distinct | PASS | Amber proposal ghosts, rejection overlays, and validated solid geometry in `frontend/src/components/scene/`; E2E run-to-commit flow and screenshots show distinct states |
 | 13 | Nine presets change real camera/layer state | PASS | `frontend/src/lib/viewPresets.test.ts`; E2E switches all nine presets; screenshots `preset-01` … `preset-09` |
 | 14 | Timeline replay and event markers work | PASS | E2E `switches all nine render presets, replays, and honours keyboard shortcuts`; timeline scrub wired to validated snapshots |
-| 15 | Provenance links scene state to events/findings | PENDING | E2E assertion added: Events tab → newest event → Inspect → `Sequence`, `Verified bundle`, `Hash chain`. Requires the final full Playwright run |
+| 15 | Provenance links scene state to events/findings | PASS | Full Playwright run passed: Events tab → newest event → Inspect → `Sequence`, `Verified bundle`, and `Hash chain` are asserted against the persisted run |
 | 16 | Report exports JSON and Markdown | PASS | `docs/evidence/run_6acc34b0a656/report.md`; `GET /api/runs/{id}/report` and `.md`; E2E download assertions; `screenshots/modal-report.png` |
 | 17 | SSE reconnect and polling fallback work | DEFERRED | SSE replay with `?after=` is covered by `test_analysis_run_stream_bundle_and_report`. Automatic reconnect and the polling fallback are implemented in `useAppStore.ts` but are not fault-injected in an automated test; adding that needs a stream-kill harness. Not claimed as verified. |
 | 18 | Cancellation and timeout produce honest terminal states | PASS | `backend/tests/test_lifecycle.py`: cancel, timeout, and orphaned-run interruption through the API |
@@ -32,7 +32,7 @@ Acceptance is based on executed evidence, not intent. Where a check has not been
 | 22 | No secrets or runtime data committed | PASS | `scripts/verify.ps1` refuses a tracked `.env`, scans tracked files for key/private-key patterns, and `git diff --check`; `.gitignore` excludes databases, WAL/SHM, build output, and test artifacts |
 | 23 | README setup reproduced by a fresh user | PASS | Fresh-context subagent followed the README: `uv sync --extra dev`, `npm ci` (one transient `ECONNRESET`, documented retry), `npm run build`, health JSON, and SPA root all passed. The test exposed Windows Smart App Control blocking unsigned `.venv\Scripts\*.exe` shims; the README now documents the tested `python -m astergrid` / `python -m uvicorn` module forms and root-relative paths. The operator's `uv run astergrid` failure and the live `python -m astergrid` health check are recorded in `docs/evidence/windows-app-control-diagnosis.pdf`. See `docs/SESSION_LOG.md`. |
 | 24 | Production build served by FastAPI | PASS | Playwright runs against the isolated production server on port `8127`, which serves `frontend/dist` through the FastAPI static/SPA routes |
-| 25 | Remote `main` matches local `HEAD` after push | PENDING | `git ls-remote origin refs/heads/main` compared with local `HEAD` at the end of the finalization pass |
+| 25 | Remote `main` matches local `HEAD` after push | PASS | `git push origin main` moved `main` `0e300e9..c7a5de7`; `git ls-remote origin refs/heads/main` returned `c7a5de70c89b5e88fe6fe0385cddd2d6aef4965c`, identical to local `HEAD`. The acceptance-record commit that follows is docs-only and is pushed and checked the same way. |
 
 ## Quality gates
 
@@ -44,7 +44,8 @@ Acceptance is based on executed evidence, not intent. Where a check has not been
 | Frontend typecheck | `npm run typecheck` | Clean |
 | Frontend unit tests | `npm run test:run` | 28 passed |
 | Frontend production build | `npm run build` | Succeeds |
-| Browser acceptance | `node node_modules\@playwright\test\cli.js test` (in `frontend`) | 8 passed (Chromium, production build) |
+| Browser acceptance | `node node_modules\@playwright\test\cli.js test` (in `frontend`) | 8 passed in 5.6 min (Chromium, production build) |
+| Full gate | `powershell -ExecutionPolicy Bypass -File scripts\verify.ps1` | Exit 0 on commit `c7a5de7` |
 | Dependency audit | `npm audit` (frontend) | 0 vulnerabilities after upgrading Vitest to 4.1.12 |
 | Visual evidence | `node scripts/capture-evidence.mjs --run run_6acc34b0a656 --base http://127.0.0.1:8000` | 18 screenshots captured; no console errors; canvas present |
 

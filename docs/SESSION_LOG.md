@@ -91,4 +91,6 @@ Gemini is **not implemented**. A request without a key returns `GEMINI_NOT_CONFI
 
 ### Gate result
 
-- Pending the final full `scripts\verify.ps1` run on this tree; the result and commit/push SHAs are recorded in `docs/ACCEPTANCE.md`.
+- `scripts\verify.ps1` passed on the final tree (exit 0): hygiene clean, backend 17 passed, Ruff clean, 26 files formatted, typecheck clean, frontend 28 passed, production build succeeded, Playwright 8/8 passed in 5.6 min.
+- Committed as `c7a5de7` and pushed to `origin/main`; `git ls-remote origin refs/heads/main` returned `c7a5de70c89b5e88fe6fe0385cddd2d6aef4965c`, matching local `HEAD`. The acceptance record and this log are updated in a docs-only commit pushed immediately after.
+- The only build warning is Vite's >500 kB chunk note for the Three.js bundle (1.49 MB / 419 kB gzipped). It is not an error and no code-splitting change was made in this pass.
