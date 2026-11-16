@@ -69,13 +69,22 @@ All screenshots were captured from the production build at `http://127.0.0.1:800
 | `mobile-brief.png` | 390×844 | Compact Brief tab with agent status |
 | `mobile-evidence.png` | 390×844 | Compact Evidence tab |
 
+## Windows Application Control diagnosis
+
+| File | Contents |
+|---|---|
+| `windows-app-control-diagnosis.pdf` | Seven-page record of the `uv run astergrid` → `os error 4551` launch failure, the verified `python -m astergrid` path, the live health check, and the supplied third-party analysis (Appendix A) |
+| `windows-app-control-diagnosis.html` | Print source for the PDF; rendered with `frontend/scripts/render-pdf.mjs` |
+
+The PDF records a local launch diagnosis only. It does not identify the active policy (the Code Integrity query is included for that purpose), and no Windows security setting was changed. See `docs/SESSION_LOG.md` for the fix history.
+
 ## Reproduction
 
 Start the production server with the canonical run available:
 
 ```powershell
 cd backend
-uv run astergrid
+uv run python -m astergrid
 ```
 
 Then, from `frontend/`:

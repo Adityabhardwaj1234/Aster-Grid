@@ -167,7 +167,11 @@ test.describe.serial('ASTERGRID deterministic acceptance', () => {
   test('switches all nine render presets, replays, and honours keyboard shortcuts', async ({
     page,
   }, testInfo) => {
-    test.setTimeout(180_000);
+    // Nine live 3D presets plus replay and keyboard flows. Headless Chromium renders
+    // WebGL in software, so a single actionability check can wait several frames and
+    // the body legitimately needs ~4 minutes on an integrated GPU. This is a rendering
+    // budget, not a relaxed assertion.
+    test.setTimeout(360_000);
     const problems = watchProblems(page);
     await page.goto(`/?run=${runId}`);
     await expect(page.locator('canvas')).toBeVisible({ timeout: 30_000 });

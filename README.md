@@ -49,7 +49,7 @@ uv run python -m astergrid
 
 Open `http://127.0.0.1:8000`. Use `--port <n>` if port 8000 is occupied.
 
-`python -m astergrid` is the portable entry point. The `uv run astergrid` console-script shortcut is equivalent, but some Windows Application Control / Smart App Control policies block unsigned `.venv\Scripts\*.exe` shims with `os error 4551`. The module form runs through `python.exe` and is not affected. The same applies to `uv run uvicorn`; use `python -m uvicorn` if the shim is blocked.
+`python -m astergrid` is the portable entry point. The generated `uv run astergrid` console-script shortcut can be blocked by Windows Application Control / Smart App Control with `Failed to spawn: astergrid` and `os error 4551`, because it is an unsigned `.venv\Scripts\*.exe` shim. The module form runs through `python.exe` and is not affected. The same applies to `uv run uvicorn`; use `python -m uvicorn` if the shim is blocked. The verified diagnosis and live health check are recorded in `docs/evidence/windows-app-control-diagnosis.pdf`.
 
 ### 3. Develop
 

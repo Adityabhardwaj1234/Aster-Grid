@@ -21,19 +21,19 @@ powershell -ExecutionPolicy Bypass -File scripts\verify.ps1 -SkipE2E
 # Backend
 cd backend
 uv sync --extra dev
-uv run pytest -q
-uv run ruff check .
-uv run ruff format --check .
+uv run --extra dev python -m pytest -q
+uv run --extra dev python -m ruff check .
+uv run --extra dev python -m ruff format --check .
 
 # Frontend
 cd ..\frontend
 npm run typecheck
 npm run test:run
 npm run build
-npx playwright test
+node node_modules\@playwright\test\cli.js test
 ```
 
-`uv sync --extra dev` is required. Without the dev extra, `uv run pytest` can fall through to a system Python instead of the project environment.
+`uv sync --extra dev` is required. Without the dev extra, `python -m pytest` can fall through to a system Python instead of the project environment. Module forms are used deliberately: unsigned console-script shims in `.venv\Scripts` can be blocked by Windows Application Control with `os error 4551`.
 
 ## Test layers and current coverage
 
@@ -111,7 +111,7 @@ Frontend total: **28 passed**. Typecheck and production build are separate gates
 3. Switches all nine render presets, replays the timeline, and honours keyboard shortcuts.
 4. Keeps tablet and mobile layouts usable, including mobile Scene/Brief/Evidence tabs.
 
-Every test watches for console errors, page errors, and failed same-origin requests. The suite takes about 5.4 minutes.
+Every test watches for console errors, page errors, and failed same-origin requests. The suite takes about 6–8 minutes on an integrated GPU. The nine-preset test alone has a 360 s budget: headless Chromium renders WebGL in software, so a single actionability check can wait several frames. The budget covers rendering cost; no assertion is relaxed.
 
 ### Visual evidence (18 screenshots)
 

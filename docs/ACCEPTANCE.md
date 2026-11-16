@@ -8,7 +8,7 @@ Acceptance is based on executed evidence, not intent. Where a check has not been
 
 | # | Requirement | Status | Evidence |
 |---|---|---|---|
-| 1 | Repository initialized on `main` with production docs | PENDING | Git history and remote `HEAD` recorded at the end of the finalization pass |
+| 1 | Repository initialized on `main` with production docs | PASS | Repository on `main`; commit `0e300e9`; `origin/main` matched local `HEAD` at `0e300e9` before this finalization pass; the final documentation commit is verified below |
 | 2 | Supplied artwork used as hero and compact radar mark | PASS | `docs/evidence/run_6acc34b0a656/screenshots/launch.png`; `frontend/public/brand/astergrid-hero.jpg`; `frontend/public/brand/astergrid-mark.png`; generator `scripts/prepare_brand.py` |
 | 3 | Deterministic demo works without model credentials | PASS | Canonical run `run_6acc34b0a656`: `model_calls=0`, `effective_mode=deterministic`, `status=completed`; `backend/tests/test_api.py::test_analysis_run_stream_bundle_and_report` |
 | 4 | Four fictional scenario families available | PASS | `GET /api/presets` returns four scenario presets, one each for flood, wildfire, infrastructure, and exploration; `backend/src/astergrid/presets.py`; preset gallery on the launch screen |
@@ -30,7 +30,7 @@ Acceptance is based on executed evidence, not intent. Where a check has not been
 | 20 | Responsive desktop/tablet/mobile layouts | PASS | `screenshots/desktop-command.png`, `tablet-command.png`, `mobile-scene.png`, `mobile-brief.png`, `mobile-evidence.png`; E2E `keeps tablet and mobile command layouts usable` |
 | 21 | Keyboard and reduced-motion support | PASS | E2E keyboard-shortcut assertions; `prefers-reduced-motion` handling in `SceneView.tsx` with a visible “Honoured by system” status; focus-visible styles and dialog focus management |
 | 22 | No secrets or runtime data committed | PASS | `scripts/verify.ps1` refuses a tracked `.env`, scans tracked files for key/private-key patterns, and `git diff --check`; `.gitignore` excludes databases, WAL/SHM, build output, and test artifacts |
-| 23 | README setup reproduced by a fresh user | PASS | Fresh-context subagent followed the README: `uv sync --extra dev`, `npm ci` (one transient `ECONNRESET`, documented retry), `npm run build`, health JSON, and SPA root all passed. The test exposed Windows Smart App Control blocking unsigned `.venv\Scripts\*.exe` shims; the README now documents the tested `python -m astergrid` / `python -m uvicorn` module forms and root-relative paths. See `docs/SESSION_LOG.md`. |
+| 23 | README setup reproduced by a fresh user | PASS | Fresh-context subagent followed the README: `uv sync --extra dev`, `npm ci` (one transient `ECONNRESET`, documented retry), `npm run build`, health JSON, and SPA root all passed. The test exposed Windows Smart App Control blocking unsigned `.venv\Scripts\*.exe` shims; the README now documents the tested `python -m astergrid` / `python -m uvicorn` module forms and root-relative paths. The operator's `uv run astergrid` failure and the live `python -m astergrid` health check are recorded in `docs/evidence/windows-app-control-diagnosis.pdf`. See `docs/SESSION_LOG.md`. |
 | 24 | Production build served by FastAPI | PASS | Playwright runs against the isolated production server on port `8127`, which serves `frontend/dist` through the FastAPI static/SPA routes |
 | 25 | Remote `main` matches local `HEAD` after push | PENDING | `git ls-remote origin refs/heads/main` compared with local `HEAD` at the end of the finalization pass |
 
@@ -44,7 +44,7 @@ Acceptance is based on executed evidence, not intent. Where a check has not been
 | Frontend typecheck | `npm run typecheck` | Clean |
 | Frontend unit tests | `npm run test:run` | 28 passed |
 | Frontend production build | `npm run build` | Succeeds |
-| Browser acceptance | `npx playwright test` | 8 passed (Chromium, production build) |
+| Browser acceptance | `node node_modules\@playwright\test\cli.js test` (in `frontend`) | 8 passed (Chromium, production build) |
 | Dependency audit | `npm audit` (frontend) | 0 vulnerabilities after upgrading Vitest to 4.1.12 |
 | Visual evidence | `node scripts/capture-evidence.mjs --run run_6acc34b0a656 --base http://127.0.0.1:8000` | 18 screenshots captured; no console errors; canvas present |
 

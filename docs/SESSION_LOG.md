@@ -72,3 +72,23 @@ Gemini is **not implemented**. A request without a key returns `GEMINI_NOT_CONFI
 
 - `scripts\verify.ps1` passed on the final tree with the totals above.
 - Commit and remote `HEAD` equality are recorded in `docs/ACCEPTANCE.md`.
+
+## 2026-11-16 — Post-commit hardening: launch diagnosis and browser budget
+
+### Windows Application Control
+
+- The operator's `uv run astergrid` failed with `Failed to spawn: astergrid` and `An Application Control policy has blocked this file. (os error 4551)`. The generated `.venv\Scripts\astergrid.exe` console-script shim was blocked before Python ran; this was not an application crash.
+- Verified the module form live: `uv run python -m astergrid --host 127.0.0.1 --port 8131` started Uvicorn and `GET /api/health` returned `{"status":"ok","version":"0.1.0","database":"ok"}`.
+- Added `docs/evidence/windows-app-control-diagnosis.pdf` and its print source `windows-app-control-diagnosis.html`. The seven-page PDF records the exact failure, the module invocation, the live health check, the read-only Code Integrity query, and the operator-supplied third-party analysis as Appendix A. No Windows security setting was changed.
+- Added `frontend/scripts/render-pdf.mjs` so HTML documentation can be rendered through Node and Playwright's signed Chromium without any Python console-script shim.
+- Corrected stale shim instructions in `docs/evidence/README.md` (`uv run astergrid` → `uv run python -m astergrid`) and `docs/TEST_PLAN.md` (`pytest`/`ruff`/Playwright). `README.md` now links the diagnosis.
+
+### Playwright nine-preset budget
+
+- The full gate failed test 7 with `Test timeout of 180000ms exceeded`. Trace analysis showed the body completed every action and the final `expect(problems.errors).toEqual([])` passed in 330 ms. The body needed about 231 s and teardown about 82 s because headless Chromium renders WebGL in software; each actionability check waits several frames.
+- Raised only this test's budget to 360 s with an explanatory comment. No assertion was relaxed or removed. Isolated run: test 1 and test 7 passed in 4.9 min; test 7 took 2.5 min.
+- `docs/TEST_PLAN.md` now documents the rendering budget and the 6–8 minute suite estimate.
+
+### Gate result
+
+- Pending the final full `scripts\verify.ps1` run on this tree; the result and commit/push SHAs are recorded in `docs/ACCEPTANCE.md`.

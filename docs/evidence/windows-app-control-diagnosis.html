@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ASTERGRID — Windows Application Control launch diagnosis</title>
+    <style>
+      :root {
+        --ink: #132238;
+        --muted: #536273;
+        --line: #d7dee7;
+        --paper: #ffffff;
+        --wash: #f4f7fa;
+        --navy: #0b1c2c;
+        --teal: #0f766e;
+        --teal-soft: #e6f4f1;
+        --amber: #b45309;
+        --amber-soft: #fdf3e3;
+        --red: #b91c1c;
+        --red-soft: #fdecec;
+        --mono: "Cascadia Mono", Consolas, "Courier New", monospace;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Segoe UI", Arial, sans-serif;
+        font-size: 10.4pt;
+        line-height: 1.55;
+      }
+
+      .sheet {
+        max-width: 178mm;
+        margin: 0 auto;
+      }
+
+      .cover {
+        background:
+          linear-gradient(rgba(11, 28, 44, 0.94), rgba(11, 28, 44, 0.98)),
+          repeating-linear-gradient(0deg, transparent 0 23px, rgba(79, 216, 255, 0.12) 23px 24px),
+          repeating-linear-gradient(90deg, transparent 0 23px, rgba(79, 216, 255, 0.12) 23px 24px);
+        color: #f8fbff;
+        padding: 20mm 16mm 15mm;
+        margin-bottom: 9mm;
+        border-bottom: 3px solid #4fd8ff;
+      }
+
+      .wordmark {
+        font-size: 10pt;
+        font-weight: 700;
+        letter-spacing: 0.32em;
+        color: #8fe7ff;
+        text-transform: uppercase;
+      }
+
+      .cover h1 {
+        font-size: 27pt;
+        line-height: 1.14;
+        margin: 7mm 0 3mm;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      .cover .sub {
+        font-size: 12.2pt;
+        color: #c9d8e6;
+        max-width: 150mm;
+        margin: 0 0 10mm;
+      }
+
+      .cover code {
+        background: rgba(143, 231, 255, 0.14);
+        border-color: rgba(143, 231, 255, 0.32);
+        color: #d8f6ff;
+      }
+
+      .meta {
+        display: flex;
+        gap: 10mm;
+        flex-wrap: wrap;
+        font-size: 8.6pt;
+        color: #9fb3c8;
+        border-top: 1px solid rgba(143, 231, 255, 0.3);
+        padding-top: 4mm;
+      }
+
+      .meta strong { color: #e8f4ff; display: block; font-weight: 600; }
+
+      h2 {
+        font-size: 14pt;
+        margin: 9mm 0 3mm;
+        padding-bottom: 2mm;
+        border-bottom: 1.5px solid var(--line);
+        color: var(--navy);
+        page-break-after: avoid;
+      }
+
+      h3 {
+        font-size: 11pt;
+        margin: 6mm 0 2mm;
+        color: var(--navy);
+        page-break-after: avoid;
+      }
+
+      p { margin: 0 0 3mm; }
+
+      ul, ol { margin: 0 0 3mm 5mm; padding: 0; }
+      li { margin-bottom: 1.6mm; }
+
+      code {
+        font-family: var(--mono);
+        font-size: 9pt;
+        background: #eef2f6;
+        border: 1px solid #e1e7ee;
+        border-radius: 3px;
+        padding: 0.3mm 1.3mm;
+      }
+
+      pre {
+        font-family: var(--mono);
+        font-size: 8.7pt;
+        line-height: 1.45;
+        background: #0f1f2e;
+        color: #e6f0f7;
+        border-left: 3px solid #4fd8ff;
+        border-radius: 4px;
+        padding: 4mm 4.5mm;
+        margin: 2.5mm 0 4mm;
+        white-space: pre-wrap;
+        word-break: break-word;
+        page-break-inside: avoid;
+      }
+
+      pre code {
+        background: transparent;
+        border: 0;
+        padding: 0;
+        color: inherit;
+        font-size: inherit;
+      }
+
+      .callout {
+        border: 1px solid #c7e6e1;
+        background: var(--teal-soft);
+        border-left: 4px solid var(--teal);
+        border-radius: 4px;
+        padding: 3.5mm 4.5mm;
+        margin: 3mm 0 5mm;
+        page-break-inside: avoid;
+      }
+
+      .callout.warn {
+        border-color: #efd3a8;
+        background: var(--amber-soft);
+        border-left-color: var(--amber);
+      }
+
+      .callout.danger {
+        border-color: #f3c6c6;
+        background: var(--red-soft);
+        border-left-color: var(--red);
+      }
+
+      .callout .label {
+        display: block;
+        font-size: 8pt;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--teal);
+        margin-bottom: 1.5mm;
+      }
+
+      .callout.warn .label { color: var(--amber); }
+      .callout.danger .label { color: var(--red); }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2.5mm 0 5mm;
+        font-size: 9pt;
+        page-break-inside: avoid;
+      }
+
+      th {
+        text-align: left;
+        background: var(--navy);
+        color: #f8fbff;
+        font-weight: 600;
+        padding: 2.2mm 2.6mm;
+        border: 1px solid #22384e;
+      }
+
+      td {
+        padding: 2.2mm 2.6mm;
+        border: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      tr:nth-child(even) td { background: #f8fafc; }
+
+      .ok { color: var(--teal); font-weight: 600; }
+      .bad { color: var(--red); font-weight: 600; }
+
+      .kv {
+        display: grid;
+        grid-template-columns: 34mm 1fr;
+        gap: 1.6mm 4mm;
+        font-size: 9.4pt;
+        margin: 2mm 0 5mm;
+      }
+
+      .kv dt { color: var(--muted); font-weight: 600; }
+      .kv dd { margin: 0; }
+
+      .appendix {
+        page-break-before: always;
+      }
+
+      .transcript {
+        font-family: "Segoe UI", Arial, sans-serif;
+        font-size: 8.7pt;
+        line-height: 1.5;
+        background: #f7f9fb;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 4mm 5mm;
+      }
+
+      .transcript p { margin-bottom: 2.6mm; }
+      .transcript strong { color: var(--navy); }
+
+      .transcript ul, .transcript ol { margin-left: 5mm; }
+      .transcript table { font-size: 8.2pt; }
+
+      .footnote {
+        font-size: 8.2pt;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        padding-top: 3mm;
+        margin-top: 7mm;
+      }
+
+      .page-break { page-break-before: always; }
+
+      .no-break { page-break-inside: avoid; }
+    </style>
+  </head>
+  <body>
+    <header class="cover">
+      <div class="wordmark">ASTERGRID</div>
+      <h1>Windows Application Control<br />launch diagnosis</h1>
+      <p class="sub">
+        Why <code>uv run astergrid</code> is blocked with <code>os error 4551</code>,
+        what the error actually means, and the verified launch path that works
+        without weakening Windows security.
+      </p>
+      <div class="meta">
+        <div><strong>Prepared</strong>16 November 2026</div>
+        <div><strong>System</strong>Windows 11 · local workstation</div>
+        <div><strong>Application</strong>ASTERGRID v0.1.0</div>
+        <div><strong>Status</strong>Resolved · verified live</div>
+      </div>
+    </header>
+
+    <main class="sheet">
+      <h2>1. Summary</h2>
+
+      <div class="callout">
+        <span class="label">Verified outcome</span>
+        <p>
+          The application did not crash and the Python package is not broken.
+          Windows Application Control refused to execute the generated
+          <code>astergrid</code> console-script shim inside
+          <code>backend\.venv\Scripts\</code>. Invoking the same entry point through
+          the Python interpreter bypasses the blocked shim and starts the server
+          normally.
+        </p>
+        <p style="margin-bottom: 0">
+          <strong>Working command:</strong>
+          <code>uv run python -m astergrid --host 127.0.0.1 --port 8000</code>,
+          run from <code>backend</code>.
+        </p>
+      </div>
+
+      <dl class="kv">
+        <dt>Failed command</dt>
+        <dd><code>uv run astergrid</code> → <code>Failed to spawn: astergrid</code></dd>
+        <dt>Operating-system error</dt>
+        <dd><code>An Application Control policy has blocked this file. (os error 4551)</code></dd>
+        <dt>Verified workaround</dt>
+        <dd><code>uv run python -m astergrid --host 127.0.0.1 --port 8000</code></dd>
+        <dt>Equivalent form</dt>
+        <dd><code>uv run python -c "from astergrid.__main__ import main; main()"</code></dd>
+        <dt>Live health check</dt>
+        <dd><code>{"status":"ok","version":"0.1.0","database":"ok"}</code></dd>
+        <dt>Security posture</dt>
+        <dd>No App Control policy, Defender setting, or system security control was changed.</dd>
+      </dl>
+
+      <h2>2. The exact failure</h2>
+
+      <p>
+        The command used to start the backend was the console-script form:
+      </p>
+
+      <pre><code>&gt; uv run astergrid
+error: Failed to spawn: `astergrid`
+  Caused by: An Application Control policy has blocked this file. (os error 4551)</code></pre>
+
+      <p>
+        The message is produced by the process launcher before Python runs any
+        application code. It is not an import error, a missing dependency, a port
+        conflict, or an exception from ASTERGRID. Windows stopped the executable
+        file itself.
+      </p>
+
+      <h2>3. Root cause</h2>
+
+      <p>
+        A Python package can declare a console entry point. Installing the package
+        generates a small launcher executable in the virtual environment:
+      </p>
+
+      <pre><code>backend\.venv\Scripts\astergrid.exe</code></pre>
+
+      <p>
+        That launcher is a generated, unsigned shim. On this machine an enforced
+        Application Control policy rejects it, so <code>uv run astergrid</code>
+        resolves the shim and is blocked at spawn time. The same policy can affect
+        other generated shims such as <code>uvicorn.exe</code>,
+        <code>pytest.exe</code>, and <code>ruff.exe</code>.
+      </p>
+
+      <div class="callout warn">
+        <span class="label">What this is not</span>
+        <p style="margin-bottom: 0">
+          This is not evidence that ASTERGRID is malicious, corrupted, or
+          incompatible with Windows. It is a policy decision about an unsigned
+          generated launcher. The underlying Python interpreter and the package
+          code are allowed to run.
+        </p>
+      </div>
+
+      <h2>4. Why <code>python -m</code> works</h2>
+
+      <p>
+        <code>uv run python -m astergrid</code> starts the Python interpreter and
+        asks the module system to locate <code>astergrid/__main__.py</code> on
+        <code>sys.path</code>. The module calls the same <code>main()</code>
+        function that the console script would have called. No generated
+        <code>.exe</code> shim participates, so the policy has nothing to block.
+      </p>
+
+      <p>
+        The operator's equivalent command does exactly the same thing explicitly:
+      </p>
+
+      <pre><code>uv run python -c "from astergrid.__main__ import main; main()"</code></pre>
+
+      <p>
+        Both forms are valid. The <code>-m</code> form is shorter and is now the
+        documented project convention.
+      </p>
+
+      <h2>5. Verified commands</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 27%">Purpose</th>
+            <th style="width: 43%">Command</th>
+            <th>Observed result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Start backend</td>
+            <td><code>uv run python -m astergrid --host 127.0.0.1 --port 8000</code></td>
+            <td class="ok">Uvicorn started; application startup complete</td>
+          </tr>
+          <tr>
+            <td>Health check</td>
+            <td><code>Invoke-RestMethod http://127.0.0.1:8000/api/health</code></td>
+            <td class="ok"><code>status=ok version=0.1.0 database=ok</code></td>
+          </tr>
+          <tr>
+            <td>Start frontend</td>
+            <td><code>npm run dev</code> (in <code>frontend</code>)</td>
+            <td class="ok">Vite dev server on <code>127.0.0.1:5173</code></td>
+          </tr>
+          <tr>
+            <td>Backend tests</td>
+            <td><code>uv run --extra dev python -m pytest -q</code></td>
+            <td class="ok">17 passed</td>
+          </tr>
+          <tr>
+            <td>Backend lint</td>
+            <td><code>uv run --extra dev python -m ruff check .</code></td>
+            <td class="ok">All checks passed</td>
+          </tr>
+          <tr>
+            <td>Backend format</td>
+            <td><code>uv run --extra dev python -m ruff format --check .</code></td>
+            <td class="ok">26 files already formatted</td>
+          </tr>
+          <tr>
+            <td>Browser acceptance</td>
+            <td><code>node node_modules\@playwright\test\cli.js test</code> (in <code>frontend</code>)</td>
+            <td class="ok">Deterministic acceptance suite passes</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="footnote">
+        The health check was executed live on port 8131 during preparation; the
+        command table uses the documented default port 8000. Test totals are from
+        the project verification gate, not from this document's rendering step.
+      </p>
+
+      <h2>6. Repository changes already applied</h2>
+
+      <ul>
+        <li>
+          <code>README.md</code>, <code>scripts/dev.ps1</code>,
+          <code>scripts/verify.ps1</code>, and the backend documentation use
+          <code>python -m astergrid</code>, <code>python -m uvicorn</code>,
+          <code>python -m pytest</code>, and <code>python -m ruff</code>.
+        </li>
+        <li>
+          The E2E server starts Uvicorn through the module form, so the test gate
+          never depends on a generated executable.
+        </li>
+        <li>
+          The launch failure and its resolution are recorded in the project's
+          session log and acceptance notes.
+        </li>
+        <li>
+          This PDF was rendered with Node and Playwright's signed Chromium, not
+          with a Python console-script shim.
+        </li>
+      </ul>
+
+      <h2>7. Confirming the policy (optional, read-only)</h2>
+
+      <div class="callout danger">
+        <span class="label">Do not weaken security</span>
+        <p style="margin-bottom: 0">
+          Do not disable Application Control, Smart App Control, or Defender to
+          make a convenience shim run. Use the interpreter form documented above,
+          or involve the machine owner or IT if an allow-list decision is genuinely
+          required.
+        </p>
+      </div>
+
+      <p>
+        If the exact policy and blocked binary need to be identified, an
+        administrator PowerShell session can read the Code Integrity operational
+        log. This is a read-only diagnostic:
+      </p>
+
+      <pre><code>Get-WinEvent -FilterHashtable @{
+    LogName   = 'Microsoft-Windows-CodeIntegrity/Operational'
+    Id        = 3077,3033,3079
+    StartTime = (Get-Date).AddHours(-2)
+} -MaxEvents 10 | Format-List TimeCreated, Id, Message</code></pre>
+
+      <p>
+        Relevant event identifiers are commonly described as: <strong>3077</strong>
+        (blocked by enforced policy), <strong>3033</strong> (signing-level
+        requirement failed), and <strong>3079</strong> (App Control requirement
+        failed). The blocked file path in the event should point at the generated
+        shim under <code>.venv\Scripts</code>.
+      </p>
+
+      <h2>8. Boundaries of this record</h2>
+
+      <ul>
+        <li>
+          This document proves the shim was blocked on this machine and that the
+          module invocation starts the application. The live health response is
+          recorded below.
+        </li>
+        <li>
+          It does not name the active policy because the Code Integrity event log
+          was not captured during preparation; the query above is provided for
+          that purpose.
+        </li>
+        <li>
+          No Application Control, Defender, registry, or execution-policy setting
+          was inspected, modified, or disabled.
+        </li>
+        <li>
+          The supplied third-party analysis in Appendix A is retained for context.
+          It is not independent proof of the policy configuration.
+        </li>
+      </ul>
+
+      <h2>9. Verification log</h2>
+
+      <pre><code>Start:  uv run python -m astergrid --host 127.0.0.1 --port 8131
+stderr: INFO:     Started server process [23588]
+stderr: INFO:     Waiting for application startup.
+stderr: INFO:     Application startup complete.
+stderr: INFO:     Uvicorn running on http://127.0.0.1:8131
+
+GET http://127.0.0.1:8131/api/health
+200 {"status":"ok","version":"0.1.0","database":"ok"}</code></pre>
+
+      <h2 class="appendix">Appendix A — supplied diagnosis transcript</h2>
+
+      <p>
+        The following is the operator-supplied analysis, reproduced for context.
+        It is a third-party explanation, not an independent audit. Project-specific
+        facts verified during preparation appear in sections 1–9.
+      </p>
+
+      <div class="transcript">
+        <p>
+          <strong>Error:</strong> <code>Failed to spawn: astergrid</code><br />
+          <strong>Caused by:</strong> An Application Control policy has blocked this
+          file. (os error 4551)
+        </p>
+
+        <p>
+          This is a Windows Application Control (App Control / WDAC) security-policy
+          block, not a normal application crash.
+        </p>
+
+        <p>
+          The important part is:
+        </p>
+
+        <pre><code>Failed to spawn: `astergrid`
+Caused by: An Application Control policy has blocked this file.
+(os error 4551)</code></pre>
+
+        <p>
+          It means the program attempting to launch <code>astergrid</code> was
+          stopped by Windows before it could execute.
+        </p>
+
+        <p><strong>Why this happens</strong></p>
+        <p>
+          Windows Application Control can prevent executables from running when
+          they don't meet the system's security policy. Common causes include:
+        </p>
+        <ul>
+          <li>Untrusted executable: Windows doesn't recognize the executable's publisher or signature.</li>
+          <li>Unsigned binary: The executable isn't signed with a certificate trusted by the active policy.</li>
+          <li>Restricted execution policy: Your Windows installation has an enforced application-control policy.</li>
+          <li>Build or installation issue: A newly downloaded or compiled executable isn't allowed by the policy.</li>
+        </ul>
+
+        <p><strong>How to identify the exact cause</strong></p>
+        <p>
+          Since you've previously encountered Windows Code Integrity blocking
+          <code>pip.exe</code> on this same PC, I suspect your machine has an
+          application-control policy actively enforcing restrictions.
+        </p>
+        <p>
+          Let's verify that rather than changing Windows security settings blindly.
+        </p>
+
+        <p><strong>Step 1.</strong> Open PowerShell as Administrator and run:</p>
+
+        <pre><code>Get-WinEvent -FilterHashtable @{
+    LogName = 'Microsoft-Windows-CodeIntegrity/Operational'
+    Id = 3077,3033,3079
+    StartTime = (Get-Date).AddHours(-2)
+} -MaxEvents 10 |
+Format-List TimeCreated, Id, Message</code></pre>
+
+        <p><strong>Step 2.</strong> Look for these events:</p>
+
+        <table>
+          <thead>
+            <tr><th style="width: 20%">Event ID</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>3077</td><td>Executable explicitly blocked by enforced policy</td></tr>
+            <tr><td>3033</td><td>Signature or signing-level requirement failed</td></tr>
+            <tr><td>3079</td><td>File failed an App Control requirement</td></tr>
+          </tbody>
+        </table>
+
+        <p>
+          Microsoft documents these events in its App Control event reference.
+        </p>
+
+        <p><strong>Step 3.</strong> Send me the output.</p>
+
+        <p>I particularly need:</p>
+        <ul>
+          <li>The blocked file's full path.</li>
+          <li>The policy name or policy ID.</li>
+          <li>The verification error, if present.</li>
+          <li>The process that attempted to launch it.</li>
+        </ul>
+
+        <p><strong>What I want to establish</strong></p>
+        <p>
+          There are two different possibilities:
+        </p>
+        <ol>
+          <li>
+            <strong>Astergrid-specific restriction:</strong> Only this executable is
+            rejected. We can investigate its signature, origin and compatibility.
+          </li>
+          <li>
+            <strong>System-wide Code Integrity restriction:</strong> Your Windows
+            policy is preventing multiple executables from running. This would also
+            explain your previous Python installation problems.
+          </li>
+        </ol>
+
+        <p>
+          I don't recommend disabling Windows Application Control or weakening
+          system security to fix this.
+        </p>
+
+        <p>
+          Let's identify the exact policy and blocked binary first.
+        </p>
+      </div>
+
+      <h2 class="appendix">Appendix B — how this document was produced</h2>
+
+      <dl class="kv">
+        <dt>Source</dt>
+        <dd><code>docs/evidence/windows-app-control-diagnosis.html</code></dd>
+        <dt>Renderer</dt>
+        <dd><code>frontend/scripts/render-pdf.mjs</code></dd>
+        <dt>Command</dt>
+        <dd><code>node scripts/render-pdf.mjs --html ..\docs\evidence\windows-app-control-diagnosis.html --pdf ..\docs\evidence\windows-app-control-diagnosis.pdf</code></dd>
+        <dt>Engine</dt>
+        <dd>Playwright <code>chromium</code> in headless mode, print media, A4, 16 mm margins</dd>
+        <dt>Binary policy</dt>
+        <dd>
+          No Python console-script shim was used. The renderer runs through
+          <code>node</code> and the signed Chromium build that the verified
+          browser test suite already uses.
+        </dd>
+      </dl>
+
+      <p class="footnote">
+        ASTERGRID is a synthetic, local-first scenario laboratory. This document
+        concerns local Windows launch behaviour only. It is not a security audit of
+        the application, the policy, or the workstation.
+      </p>
+    </main>
+  </body>
+</html>
